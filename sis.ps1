@@ -1,5 +1,5 @@
 # ============================================
-# SIS v2.2 - Универсальный установщик софта
+# SIS v2.3 - Универсальный установщик софта
 # ============================================
 
 # Проверка прав администратора
@@ -81,13 +81,6 @@ $apps = @{
         winget = "7zip.7zip"
         category = "Базовые"
     }
-    "firefox" = @{
-        name = "Mozilla Firefox"
-        url = "https://download.mozilla.org/?product=firefox-stub&os=win64&lang=ru"
-        silent = "/S"
-        winget = "Mozilla.Firefox"
-        category = "Базовые"
-    }
     "vlc" = @{
         name = "VLC Media Player"
         url = "https://get.videolan.org/vlc/last/win64/vlc-3.0.21-win64.exe"
@@ -116,13 +109,6 @@ $apps = @{
         winget = "GIMP.GIMP"
         category = "Базовые"
     }
-    "vscode" = @{
-        name = "Visual Studio Code"
-        url = "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64"
-        silent = "/verysilent /suppressmsgboxes /mergetasks=!runcode"
-        winget = "Microsoft.VisualStudioCode"
-        category = "Базовые"
-    }
     "sumatra" = @{
         name = "SumatraPDF"
         url = "https://www.sumatrapdfreader.org/dl/rel/3.5.2/SumatraPDF-3.5.2-64-install.exe"
@@ -130,11 +116,22 @@ $apps = @{
         winget = "SumatraPDF.SumatraPDF"
         category = "Базовые"
     }
-    "everything" = @{
-        name = "Everything"
-        url = "https://www.voidtools.com/Everything-1.4.1.1026.x64-Setup.exe"
-        silent = "/S"
-        winget = "voidtools.Everything"
+    "killerpdf" = @{
+        name = "KillerPDF"
+        url = "https://github.com/SteveTheKiller/KillerPDF/releases/latest/download/KillerPDF.exe"
+        silent = "/silent"
+        winget = "SteveTheKiller.KillerPDF"  # исправлено
+        category = "Базовые"
+    }
+    "adobereader" = @{
+        name = "Adobe Acrobat Reader DC"
+        url = if ($is64Bit) { 
+            "https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/2300820275/AcroRdrDCx642300820275_ru_RU.exe" 
+        } else { 
+            "https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/2300820275/AcroRdrDC2300820275_ru_RU.exe" 
+        }
+        silent = "/sAll /rs /msi /qb-! /norestart"
+        winget = "Adobe.Acrobat.Reader.64-bit"
         category = "Базовые"
     }
     "klite" = @{
@@ -153,25 +150,72 @@ $apps = @{
         winget = "AntibodySoftware.WizTree"  # исправленный ID
         category = "Системные утилиты"
     }
-    "killerpdf" = @{
-        name = "KillerPDF"
-        url = "https://github.com/SteveTheKiller/KillerPDF/releases/latest/download/KillerPDF.exe"
-        silent = "/silent"
-        winget = "SteveTheKiller.KillerPDF"  # исправлено
+	"IObitUnlocker" = @{
+        name = "IObitUnlocker"
+        url = ""
+        silent = "/quiet /norestart"
+        winget = "IObit.IObitUnlocker"
         category = "Системные утилиты"
     }
-    "adobereader" = @{
-        name = "Adobe Acrobat Reader DC"
-        url = if ($is64Bit) { 
-            "https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/2300820275/AcroRdrDCx642300820275_ru_RU.exe" 
-        } else { 
-            "https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/2300820275/AcroRdrDC2300820275_ru_RU.exe" 
-        }
-        silent = "/sAll /rs /msi /qb-! /norestart"
-        winget = "Adobe.Acrobat.Reader.64-bit"
+    "java8" = @{
+        name = "Java 8 Runtime (JRE)"
+        url = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=248345_2a9c5b6b1a3a4a2a8b9c6a7b4c5d6e7f" # Пример ссылки, может меняться
+        silent = "/s"
+        winget = "Oracle.JavaRuntimeEnvironment"
         category = "Системные утилиты"
     }
-    
+	"dotnet8" = @{
+        name = ".NET 8 Desktop Runtime"
+        url = "https://dotnet.microsoft.com/en-us/download/dotnet/8.0" # Ссылка на страницу загрузки
+        silent = "/quiet /norestart" # Ключи для тихой установки
+        winget = "Microsoft.DotNet.DesktopRuntime.8"
+        category = "Системные утилиты"
+    }
+    "everything" = @{
+        name = "Everything"
+        url = "https://www.voidtools.com/Everything-1.4.1.1026.x64-Setup.exe"
+        silent = "/S"
+        winget = "voidtools.Everything"
+        category = "Системные утилиты"
+	}
+    "vscode" = @{
+        name = "Visual Studio Code"
+        url = "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64"
+        silent = "/verysilent /suppressmsgboxes /mergetasks=!runcode"
+        winget = "Microsoft.VisualStudioCode"
+        category = "Системные утилиты"
+    }
+	"qbittorrent" = @{
+        name = "qBittorrent Enhanced Edition"
+        url = "https://github.com/c0re100/qBittorrent-Enhanced-Edition/releases/latest/download/qbittorrent_enhanced_edition_x64_setup.exe"
+        silent = "/S"
+        winget = "c0re100.qBittorrent-Enhanced-Edition"
+        category = "Системные утилиты"
+	}
+	"Rufus" = @{
+        name = "Rufus #Rufus"
+        url = ""
+        silent = "/S"
+        winget = "Rufus.Rufus"
+        category = "Системные утилиты"
+	    portable = $true
+	}
+	"sdi" = @{
+        name = "SDI Origin(Lite) #sdio"
+        url = "https://www.glenn.delahoy.com/snappy-driver-installer-origin/"
+        silent = "/S"
+        winget = "GlennDelahoy.SnappyDriverInstallerOrigin"
+        category = "Системные утилиты"
+        portable = $true
+    }
+	"HDD Low Level Format Tool" = @{
+        name = "HDD Low Level Format Tool"
+        url = "https://www.softportal.com/getsoft-4831-hdd-low-level-format-tool-2.html"
+        silent = "/S"
+        winget = "HDDGURU.HDDLLFTool"
+        category = "Системные утилиты"
+    }
+	
 # ----- БРАУЗЕРЫ -----
     "yandex" = @{
         name = "Яндекс Браузер"
@@ -220,6 +264,13 @@ $apps = @{
         } else { 
         "https://download.mozilla.org/?product=firefox-stub&os=win32&lang=ru"
         }
+        silent = "/S"
+        winget = "Mozilla.Firefox"
+        category = "Браузеры"
+    }
+    "firefox" = @{
+        name = "Mozilla Firefox"
+        url = "https://download.mozilla.org/?product=firefox-stub&os=win64&lang=ru"
         silent = "/S"
         winget = "Mozilla.Firefox"
         category = "Браузеры"
@@ -274,6 +325,21 @@ $apps = @{
         winget = "OCBase.OCCT.Personal"
         category = "Диагностика"
     }
+	"CrystalDiskInfo " = @{
+        name = "CrystalDiskInfo "
+        url = ""
+        silent = "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART"
+        winget = "CrystalDewWorld.CrystalDiskInfo"
+        category = "Диагностика"
+    }
+	"Victoria" = @{
+        name = "Victoria #Victoria"
+        url = ""
+        silent = "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART"
+        winget = "Victoria.Victoria"
+        category = "Диагностика"
+		portable = $true
+    }
 }
 
 # ============================================
@@ -283,7 +349,8 @@ $apps = @{
 function Install-App {
     param($key)
     $app = $apps[$key]
-    
+
+    # Проверка, установлена ли уже программа
     $isInstalled = $false
     $regPaths = @(
         "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*",
@@ -296,21 +363,21 @@ function Install-App {
             break
         }
     }
-    
+
     if ($isInstalled) {
         Write-Host "✓ $($app.name) уже установлен!" -ForegroundColor Green
         return
     }
-    
+
     Write-Host "Скачивание $($app.name)..." -ForegroundColor Yellow
-    
+
     $tempFile = "$env:TEMP\$key.exe"
     if ($app.url -match "\.msi$") {
         $tempFile = "$env:TEMP\$key.msi"
     } elseif ($app.url -match "\.zip$") {
         $tempFile = "$env:TEMP\$key.zip"
     }
-    
+
     try {
         $webClient = New-Object System.Net.WebClient
         Register-ObjectEvent $webClient 'DownloadProgressChanged' -Action {
@@ -318,9 +385,9 @@ function Install-App {
             Write-Progress -Activity "Скачивание $($app.name)" -Status "$percent%" -PercentComplete $percent
         } | Out-Null
         $webClient.DownloadFile($app.url, $tempFile)
-        
+
         Write-Host "Установка $($app.name)..." -ForegroundColor Yellow
-        
+
         if ($tempFile -match "\.msi$") {
             $process = Start-Process -FilePath "msiexec" -ArgumentList "/i `"$tempFile`" $($app.silent) /norestart" -Wait -PassThru
         } elseif ($tempFile -match "\.zip$") {
@@ -336,9 +403,19 @@ function Install-App {
         } else {
             $process = Start-Process -FilePath $tempFile -ArgumentList $app.silent -Wait -PassThru
         }
-        
+
         if ($process.ExitCode -eq 0 -or $process.ExitCode -eq 3010) {
             Write-Host "✓ $($app.name) установлен!" -ForegroundColor Green
+            
+            # ➕ ПОДСКАЗКА ДЛЯ ПОРТАТИВНЫХ ПРОГРАММ
+            if ($app.portable -eq $true) {
+                Write-Host ""
+                Write-Host "📌 Это портативная версия." -ForegroundColor Yellow
+                Write-Host "   Ярлык не создаётся. Чтобы запустить программу:" -ForegroundColor Yellow
+                Write-Host "   ➤ Введите в PowerShell: $($app.name.ToLower())" -ForegroundColor Cyan
+                Write-Host "   ➤ Или найдите файл в папке 'Загрузки'" -ForegroundColor Gray
+                Write-Host ""
+            }
         } else {
             Write-Host "✗ Ошибка при установке $($app.name) (код: $($process.ExitCode))" -ForegroundColor Red
         }
@@ -689,15 +766,15 @@ function Show-SubMenu {
 function Show-MainMenu {
     Clear-Host
     Write-Host "============================================================" -ForegroundColor Cyan
-    Write-Host "         SIS v2.2" -ForegroundColor Yellow
+    Write-Host "         SIS v2.3" -ForegroundColor Yellow
     Write-Host "============================================================" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "  [1] Базовые программы (10)" -ForegroundColor Green
-    Write-Host "  [2] Системные утилиты (3)" -ForegroundColor Cyan
-    Write-Host "  [3] Браузеры (5)" -ForegroundColor Green
-    Write-Host "  [4] Диагностика (7)" -ForegroundColor Magenta
+    Write-Host "  [1] Базовые программы (9)" -ForegroundColor Green
+    Write-Host "  [2] Системные утилиты (10)" -ForegroundColor Cyan
+    Write-Host "  [3] Браузеры (6)" -ForegroundColor Green
+    Write-Host "  [4] Диагностика (9)" -ForegroundColor Magenta
     Write-Host ""
-    Write-Host "  [5] Установить всё сразу" -ForegroundColor Yellow
+    #Write-Host "  [5] Установить всё сразу" -ForegroundColor Yellow
     Write-Host "  [6] Microsoft Office (выбор версии)" -ForegroundColor Yellow
     Write-Host "  [7] Visual C++ Redistributable AIO" -ForegroundColor Yellow
     Write-Host "  [8] Скачать сертификаты Минцифры" -ForegroundColor Yellow
