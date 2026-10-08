@@ -1,11 +1,41 @@
 # ============================================
-# SIS v2.3 - Универсальный установщик софта
+# SIS v2.4 - Универсальный установщик софта
 # ============================================
 
 # Проверка прав администратора
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
     Write-Host "Запустите скрипт от имени администратора!" -ForegroundColor Red
     Start-Process PowerShell -Verb RunAs -ArgumentList "-File `"$PSCommandPath`""
+    exit
+}
+
+# ============================================
+# ПРОВЕРКА ВЕРСИИ POWERSHELL
+# ============================================
+
+$psVersion = $PSVersionTable.PSVersion.Major
+
+if ($psVersion -lt 5) {
+    Clear-Host
+    Write-Host "============================================" -ForegroundColor Cyan
+    Write-Host "    ТРЕБУЕТСЯ ОБНОВЛЕНИЕ POWERSHELL" -ForegroundColor Yellow
+    Write-Host "============================================" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "У вас установлена старая версия PowerShell ($psVersion)." -ForegroundColor Red
+    Write-Host "Для работы SIS требуется PowerShell 5.1." -ForegroundColor Red
+    Write-Host ""
+    Write-Host "📌 Как обновить:" -ForegroundColor White
+    Write-Host "1. Скачайте Windows Management Framework 5.1:" -ForegroundColor Gray
+    Write-Host "   https://www.microsoft.com/en-us/download/details.aspx?id=54616" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "2. Установите .NET Framework 4.5.2 или выше (если требуется)" -ForegroundColor Gray
+    Write-Host ""
+    Write-Host "3. Распакуйте архив WMF 5.1 и запустите Install-WMF5.1.ps1" -ForegroundColor Gray
+    Write-Host "   (или просто установите .msu файл)" -ForegroundColor Gray
+    Write-Host ""
+    Write-Host "4. Перезагрузите компьютер" -ForegroundColor Gray
+    Write-Host ""
+    Read-Host "Нажмите Enter для выхода"
     exit
 }
 
@@ -18,6 +48,21 @@ $arch = if ($is64Bit) { "x64" } else { "x86" }
 # ============================================
 
 function Install-WinGet {
+    # Проверка версии Windows
+    $windowsVersion = [System.Environment]::OSVersion.Version
+    $isWin7 = ($windowsVersion.Major -eq 6 -and $windowsVersion.Minor -eq 1)
+    $isWin8 = ($windowsVersion.Major -eq 6 -and $windowsVersion.Minor -ge 2 -and $windowsVersion.Minor -le 3)
+    
+    if ($isWin7 -or $isWin8) {
+        Write-Host "✗ Winget не поддерживается на Windows $($windowsVersion.Major).$($windowsVersion.Minor)" -ForegroundColor Red
+        Write-Host ""
+        Write-Host "📌 Для старых версий Windows используйте:" -ForegroundColor Yellow
+        Write-Host "   • Прямые ссылки (скрипт сделает это автоматически)" -ForegroundColor Gray
+        Write-Host "   • Или Chocolatey: https://chocolatey.org/" -ForegroundColor Cyan
+        Write-Host ""
+        return $false
+    }
+    
     Write-Host "Winget не найден. Пытаюсь установить..." -ForegroundColor Yellow
     
     try {
@@ -65,8 +110,32 @@ function Check-Winget {
     }
 }
 
-# Проверяем Winget, если не найден - устанавливаем
-$useWinget = Check-Winget
+# ============================================
+# ПРОВЕРКА ВЕРСИИ WINDOWS И WINGET
+# ============================================
+
+# Определяем версию Windows
+$windowsVersion = [System.Environment]::OSVersion.Version
+$isWin7 = ($windowsVersion.Major -eq 6 -and $windowsVersion.Minor -eq 1)
+$isWin8 = ($windowsVersion.Major -eq 6 -and $windowsVersion.Minor -ge 2 -and $windowsVersion.Minor -le 3)
+
+# Проверяем, поддерживается ли Winget
+if ($isWin7 -or $isWin8) {
+    Write-Host ""
+    Write-Host "⚠️  Обнаружена старая версия Windows ($($windowsVersion.Major).$($windowsVersion.Minor))." -ForegroundColor Yellow
+    Write-Host "    Winget не поддерживается на этой системе." -ForegroundColor Yellow
+    Write-Host "    Все программы будут устанавливаться по прямым ссылкам." -ForegroundColor Yellow
+    Write-Host ""
+    $useWinget = $false
+} else {
+    # Проверяем Winget, если не найден - устанавливаем
+    $useWinget = Check-Winget
+}
+
+if ($isWin7 -or $isWin8) {
+    Write-Host "Нажмите Enter, чтобы продолжить..." -ForegroundColor Gray
+    Read-Host
+}
 
 # ============================================
 # БАЗА ДАННЫХ ПРОГРАММ
@@ -717,6 +786,8 @@ function Show-SubMenu {
     Write-Host "  [A] Установить всё в этой категории" -ForegroundColor Yellow
     Write-Host "  [0] Назад" -ForegroundColor Red
     Write-Host ""
+    Write-Host "  💡 Можно выбрать несколько программ через запятую (например: 1,3,5)" -ForegroundColor Cyan
+    Write-Host ""
     
     $choice = Read-Host "Ваш выбор"
     
@@ -724,6 +795,7 @@ function Show-SubMenu {
         return "back"
     }
     
+    # Установка всех программ в категории
     if ($choice -eq "A" -or $choice -eq "a") {
         Write-Host "Установка всех программ в категории '$category'..." -ForegroundColor Magenta
         foreach ($app in $categoryApps) {
@@ -739,22 +811,66 @@ function Show-SubMenu {
         return "back"
     }
     
-    if ($choice -match "^\d+$") {
-        $index = [int]$choice
-        if ($index -ge 1 -and $index -le $categoryApps.Count) {
-            $selectedApp = $categoryApps[$index - 1]
-            $key = $selectedApp.Key
+    # Поддержка выбора нескольких программ через запятую
+    $selectedIndices = @()
+    $parts = $choice -split ','
+    
+    foreach ($part in $parts) {
+        $trimmed = $part.Trim()
+        if ($trimmed -match "^\d+$") {
+            $index = [int]$trimmed
+            if ($index -ge 1 -and $index -le $categoryApps.Count) {
+                $selectedIndices += $index
+            } else {
+                Write-Host "⚠️ Номер $index вне диапазона (доступно: 1-$($categoryApps.Count))" -ForegroundColor Yellow
+            }
+        } else {
+            Write-Host "⚠️ '$trimmed' — не число, пропускаю" -ForegroundColor Yellow
+        }
+    }
+    
+    if ($selectedIndices.Count -eq 0) {
+        Write-Host "Неверный выбор!" -ForegroundColor Red
+        Read-Host "Нажмите Enter для продолжения"
+        return "back"
+    }
+    
+    # Установка выбранных программ
+    Write-Host ""
+    Write-Host "Выбрано программ: $($selectedIndices.Count)" -ForegroundColor Cyan
+    Write-Host "Начинаю установку..." -ForegroundColor Magenta
+    Write-Host ""
+    
+    $successCount = 0
+    $failCount = 0
+    
+    foreach ($index in $selectedIndices) {
+        $selectedApp = $categoryApps[$index - 1]
+        $key = $selectedApp.Key
+        
+        Write-Host "──────── $($selectedApp.Value.name) ────────" -ForegroundColor DarkGray
+        
+        try {
             if ($useWinget -and $apps[$key].winget) {
                 winget install --id $apps[$key].winget --exact --silent --accept-package-agreements
             } else {
                 Install-App $key
             }
-            Read-Host "Нажмите Enter для продолжения"
-            return "back"
+            $successCount++
         }
+        catch {
+            Write-Host "✗ Ошибка при установке $($selectedApp.Value.name): $_" -ForegroundColor Red
+            $failCount++
+        }
+        Write-Host ""
     }
     
-    Write-Host "Неверный выбор!" -ForegroundColor Red
+    Write-Host "============================================" -ForegroundColor Cyan
+    Write-Host "✅ Установлено: $successCount" -ForegroundColor Green
+    if ($failCount -gt 0) {
+        Write-Host "❌ Ошибок: $failCount" -ForegroundColor Red
+    }
+    Write-Host "============================================" -ForegroundColor Cyan
     Read-Host "Нажмите Enter для продолжения"
     return "back"
 }
@@ -766,7 +882,7 @@ function Show-SubMenu {
 function Show-MainMenu {
     Clear-Host
     Write-Host "============================================================" -ForegroundColor Cyan
-    Write-Host "         SIS v2.3" -ForegroundColor Yellow
+    Write-Host "         SIS v2.4" -ForegroundColor Yellow
     Write-Host "============================================================" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "  [1] Базовые программы (9)" -ForegroundColor Green
