@@ -43,6 +43,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 - **7-Zip** — Архиватор
 - **Adobe Acrobat Reader DC** — просмотр и работа с PDF (русская версия)
 - **GIMP** — Растровый графический редактор
+- **Inkscape** — Векторный графический редактор
 - **KillerPDF** — Бесплатный редактор PDF (OCR, подписи, аннотации)
 - **K-Lite Codec Pack Full** — Набор кодеков для видео и аудио
 - **LibreOffice** — Бесплатный офисный пакет
