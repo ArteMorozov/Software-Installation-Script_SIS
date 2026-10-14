@@ -1,5 +1,5 @@
 # ============================================
-# SIS v2.4 - Универсальный установщик софта
+# SIS v2.5 - Универсальный установщик софта
 # ============================================
 
 # Проверка прав администратора
@@ -171,7 +171,18 @@ $apps = @{
         winget = "TheDocumentFoundation.LibreOffice"
         category = "Базовые"
     }
-    "gimp" = @{
+    "inkscape" = @{
+    name = "Inkscape"
+    url = if ($is64Bit) { 
+        "https://inkscape.org/gallery/item/58560/inkscape-1.4.4_2026-05-05_dcaf3e7-x64.signed.exe"
+    } else { 
+        "https://inkscape.org/gallery/item/58560/inkscape-1.4.4_2026-05-05_dcaf3e7-x86.signed.exe"
+    }
+    silent = "/S"
+    winget = "Inkscape.Inkscape"
+    category = "Базовые"
+    }
+	"gimp" = @{
         name = "GIMP"
         url = "https://download.gimp.org/mirror/pub/gimp/v2.10/gimp-2.10.38-setup-3.exe"
         silent = "/VERYSILENT"
@@ -189,7 +200,7 @@ $apps = @{
         name = "KillerPDF"
         url = "https://github.com/SteveTheKiller/KillerPDF/releases/latest/download/KillerPDF.exe"
         silent = "/silent"
-        winget = "SteveTheKiller.KillerPDF"  # исправлено
+        winget = "SteveTheKiller.KillerPDF"
         category = "Базовые"
     }
     "adobereader" = @{
@@ -216,7 +227,7 @@ $apps = @{
         name = "WizTree"
         url = "https://diskanalyzer.com/files/WizTree_4_32_setup.exe"
         silent = "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART"
-        winget = "AntibodySoftware.WizTree"  # исправленный ID
+        winget = "AntibodySoftware.WizTree"
         category = "Системные утилиты"
     }
 	"IObitUnlocker" = @{
@@ -228,7 +239,7 @@ $apps = @{
     }
     "java8" = @{
         name = "Java 8 Runtime (JRE)"
-        url = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=248345_2a9c5b6b1a3a4a2a8b9c6a7b4c5d6e7f" # Пример ссылки, может меняться
+        url = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=248345_2a9c5b6b1a3a4a2a8b9c6a7b4c5d6e7f"
         silent = "/s"
         winget = "Oracle.JavaRuntimeEnvironment"
         category = "Системные утилиты"
@@ -236,7 +247,7 @@ $apps = @{
 	"dotnet8" = @{
         name = ".NET 8 Desktop Runtime"
         url = "https://dotnet.microsoft.com/en-us/download/dotnet/8.0" # Ссылка на страницу загрузки
-        silent = "/quiet /norestart" # Ключи для тихой установки
+        silent = "/quiet /norestart"
         winget = "Microsoft.DotNet.DesktopRuntime.8"
         category = "Системные утилиты"
     }
@@ -882,10 +893,10 @@ function Show-SubMenu {
 function Show-MainMenu {
     Clear-Host
     Write-Host "============================================================" -ForegroundColor Cyan
-    Write-Host "         SIS v2.4" -ForegroundColor Yellow
+    Write-Host "         SIS v2.5" -ForegroundColor Yellow
     Write-Host "============================================================" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "  [1] Базовые программы (9)" -ForegroundColor Green
+    Write-Host "  [1] Базовые программы (10)" -ForegroundColor Green
     Write-Host "  [2] Системные утилиты (10)" -ForegroundColor Cyan
     Write-Host "  [3] Браузеры (6)" -ForegroundColor Green
     Write-Host "  [4] Диагностика (9)" -ForegroundColor Magenta
