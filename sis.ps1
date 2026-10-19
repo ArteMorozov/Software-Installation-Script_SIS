@@ -904,7 +904,7 @@ function Show-MainMenu {
     Write-Host "============================================================" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "  [1] Базовые программы (10)" -ForegroundColor Green
-    Write-Host "  [2] Системные утилиты (10)" -ForegroundColor Cyan
+    Write-Host "  [2] Системные утилиты (11)" -ForegroundColor Cyan
     Write-Host "  [3] Браузеры (6)" -ForegroundColor Green
     Write-Host "  [4] Диагностика (9)" -ForegroundColor Magenta
     Write-Host ""
