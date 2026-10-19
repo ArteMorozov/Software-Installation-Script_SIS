@@ -62,6 +62,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 - **SDI Origin(Lite)** - Утилита для обновления и установки драйверов. Запускается командой "sdio" в терминале
 - **Visual Studio Code** — Редактор исходного кода от Microsoft
 - **WizTree** — Анализ занятого места на диске
+- **Gpg4win** — Утилита для шифрования файлов и их передачи
 
 ### Браузеры
 - **Google Chrome**
