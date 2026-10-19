@@ -295,6 +295,13 @@ $apps = @{
         winget = "HDDGURU.HDDLLFTool"
         category = "Системные утилиты"
     }
+	"Gpg4win" = @{
+        name = "Gpg4win"
+        url = "https://www.softportal.com/software-21212-gpg4win.html"
+        silent = "/S"
+        winget = ""
+        category = "Системные утилиты"
+    }
 	
 # ----- БРАУЗЕРЫ -----
     "yandex" = @{
