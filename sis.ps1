@@ -309,7 +309,7 @@ $apps = @{
     }
 	"optimizerduck" = @{
     name = "optimizerDuck"
-    url = "https://github.com/itsfatduck/optimizerDuck/releases/latest/download/optimizerDuck.exe" 
+    url = "https://github.com/itsfatduck/optimizerDuck/releases/latest/download/optimizerDuck-Windows-x64.exe" 
     silent = "/S"
     category = "Системные утилиты"
     }
