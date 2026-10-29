@@ -500,7 +500,17 @@ function Install-App {
                 return
             }
         } else {
-            $process = Start-Process -FilePath $tempFile -ArgumentList $app.silent -Wait -PassThru
+            # Проверяем, есть ли аргументы для тихой установки
+            if ([string]::IsNullOrEmpty($app.silent)) {
+                Write-Host "📌 Программа не требует установки (портативная версия)." -ForegroundColor Yellow
+                $downloadsPath = [Environment]::GetFolderPath('UserProfile') + "\Downloads"
+                Copy-Item -Path $tempFile -Destination "$downloadsPath\$($app.name).exe" -Force
+                Write-Host "✓ Файл сохранен в папку Загрузки: $downloadsPath\$($app.name).exe" -ForegroundColor Green
+                # Создаем фиктивный процесс, чтобы следующий блок кода (проверка ExitCode) не выдал ошибку
+                $process = New-Object PSObject -Property @{ ExitCode = 0 }
+            } else {
+                $process = Start-Process -FilePath $tempFile -ArgumentList $app.silent -Wait -PassThru
+            }
         }
 
         if ($process.ExitCode -eq 0 -or $process.ExitCode -eq 3010) {
