@@ -307,11 +307,12 @@ $apps = @{
     winget = "valinet.ExplorerPatcher"
     category = "Системные утилиты"
     }
-	"optimizerduck" = @{
+    "optimizerduck" = @{
     name = "optimizerDuck"
-    url = "https://github.com/itsfatduck/optimizerDuck/releases/latest" 
-    silent = "/S"
+    url = "https://github.com/itsfatduck/optimizerDuck/releases/latest"
+    silent = ""
     category = "Системные утилиты"
+    portable = $true
     }
 	
 # ----- БРАУЗЕРЫ -----
