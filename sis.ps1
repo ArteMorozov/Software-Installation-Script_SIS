@@ -1,5 +1,5 @@
 # ============================================
-# SIS v2.5 - Универсальный установщик софта
+# SIS v2.6 - Универсальный установщик софта
 # ============================================
 
 # Проверка прав администратора
@@ -181,8 +181,8 @@ $apps = @{
     silent = "/S"
     winget = "Inkscape.Inkscape"
     category = "Базовые"
-    }
-	"gimp" = @{
+}
+    "gimp" = @{
         name = "GIMP"
         url = "https://download.gimp.org/mirror/pub/gimp/v2.10/gimp-2.10.38-setup-3.exe"
         silent = "/VERYSILENT"
@@ -200,7 +200,7 @@ $apps = @{
         name = "KillerPDF"
         url = "https://github.com/SteveTheKiller/KillerPDF/releases/latest/download/KillerPDF.exe"
         silent = "/silent"
-        winget = "SteveTheKiller.KillerPDF"
+        winget = "SteveTheKiller.KillerPDF"  # исправлено
         category = "Базовые"
     }
     "adobereader" = @{
@@ -221,13 +221,18 @@ $apps = @{
         winget = "CodecGuide.K-LiteCodecPack.Full"
         category = "Базовые"
     }
-    
+    "artcraft" = @{
+    name = "ArtCraft Launcher"
+    url = "https://github.com/storytold/craft-launcher/releases/latest/download/artcraft-launcher-0.6.1-windows-x64.msi"
+    silent = "/qn"
+    category = "Базовые"
+    }
     # ----- СИСТЕМНЫЕ УТИЛИТЫ -----
     "wiztree" = @{
         name = "WizTree"
         url = "https://diskanalyzer.com/files/WizTree_4_32_setup.exe"
         silent = "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART"
-        winget = "AntibodySoftware.WizTree"
+        winget = "AntibodySoftware.WizTree"  # исправленный ID
         category = "Системные утилиты"
     }
 	"IObitUnlocker" = @{
@@ -239,7 +244,7 @@ $apps = @{
     }
     "java8" = @{
         name = "Java 8 Runtime (JRE)"
-        url = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=248345_2a9c5b6b1a3a4a2a8b9c6a7b4c5d6e7f"
+        url = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=248345_2a9c5b6b1a3a4a2a8b9c6a7b4c5d6e7f" # Пример ссылки, может меняться
         silent = "/s"
         winget = "Oracle.JavaRuntimeEnvironment"
         category = "Системные утилиты"
@@ -247,7 +252,7 @@ $apps = @{
 	"dotnet8" = @{
         name = ".NET 8 Desktop Runtime"
         url = "https://dotnet.microsoft.com/en-us/download/dotnet/8.0" # Ссылка на страницу загрузки
-        silent = "/quiet /norestart"
+        silent = "/quiet /norestart" # Ключи для тихой установки
         winget = "Microsoft.DotNet.DesktopRuntime.8"
         category = "Системные утилиты"
     }
@@ -295,12 +300,18 @@ $apps = @{
         winget = "HDDGURU.HDDLLFTool"
         category = "Системные утилиты"
     }
-	"Gpg4win" = @{
-        name = "Gpg4win"
-        url = "https://www.softportal.com/software-21212-gpg4win.html"
-        silent = "/S"
-        winget = ""
-        category = "Системные утилиты"
+	"explorerpatcher" = @{
+    name = "ExplorerPatcher"
+    url = "https://github.com/valinet/ExplorerPatcher/releases/latest/download/ep_setup.exe"
+    silent = "/S"
+    winget = "valinet.ExplorerPatcher"
+    category = "Системные утилиты"
+    }
+	"optimizerduck" = @{
+    name = "optimizerDuck"
+    url = "https://github.com/itsfatduck/optimizerDuck/releases/latest/download/optimizerDuck.exe" 
+    silent = "/S"
+    category = "Системные утилиты"
     }
 	
 # ----- БРАУЗЕРЫ -----
@@ -900,11 +911,11 @@ function Show-SubMenu {
 function Show-MainMenu {
     Clear-Host
     Write-Host "============================================================" -ForegroundColor Cyan
-    Write-Host "         SIS v2.5" -ForegroundColor Yellow
+    Write-Host "         SIS v2.6" -ForegroundColor Yellow
     Write-Host "============================================================" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "  [1] Базовые программы (10)" -ForegroundColor Green
-    Write-Host "  [2] Системные утилиты (11)" -ForegroundColor Cyan
+    Write-Host "  [1] Базовые программы (11)" -ForegroundColor Green
+    Write-Host "  [2] Системные утилиты (12)" -ForegroundColor Cyan
     Write-Host "  [3] Браузеры (6)" -ForegroundColor Green
     Write-Host "  [4] Диагностика (9)" -ForegroundColor Magenta
     Write-Host ""
