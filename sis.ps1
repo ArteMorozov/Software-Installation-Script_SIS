@@ -313,6 +313,7 @@ $apps = @{
     silent = ""
     category = "Системные утилиты"
     portable = $true
+	webpage = $true 
     }
 	
 # ----- БРАУЗЕРЫ -----
@@ -448,7 +449,14 @@ $apps = @{
 function Install-App {
     param($key)
     $app = $apps[$key]
-
+	
+    # Проверка, на открытие сайта
+	if ($app.webpage -eq $true) {
+        Write-Host "🌐 Открываю страницу для скачивания $($app.name) в браузере..." -ForegroundColor Cyan
+        Start-Process $app.url
+        Write-Host "📌 Пожалуйста, скачайте и запустите программу вручную." -ForegroundColor Yellow
+        return
+    }
     # Проверка, установлена ли уже программа
     $isInstalled = $false
     $regPaths = @(
